@@ -3,7 +3,6 @@ const { join } = require('path');
 const { ok } = require('assert');
 
 const env = process.env.NODE_ENV || "dev";
-console.log(env, '<<<<');
 ok(env === "production" || env === "dev", "A env é invalida!");
 
 const configPath = join(__dirname, './config', `.env.${ env }`);

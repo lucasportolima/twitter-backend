@@ -34,7 +34,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(require("./routes"));
+app.use('/documentation/swagger', express.static(`${__dirname}/../docs/swagger-ui`));
+app.use('/documentation/coverage', express.static(`${__dirname}/../coverage`));
 
 server.listen(process.env.PORT, () => {
   console.log('Server :D started on port 3000');
 });
+
+module.exports = app;

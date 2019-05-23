@@ -12,7 +12,32 @@ module.exports = {
 
     req.io.emit('tweet', tweet);
 
-    return res.json(tweet);
+    return res.status(201).send(tweet);
+  },
+
+  async getById(req, res) {
+    const tweet = await Tweet.findById(req.params.id);
+    return res.status(200).send(tweet);
+  },
+
+  async update(req, res) {
+    const tweet = await Tweet.findById(req.params.id);
+
+    tweet.content = req.body.content;
+    tweet.save();
+
+    return res.status(200).send(tweet);
+  },
+
+  async delete(req, res) {
+    await Tweet.findByIdAndRemove(req.params.id, (err, tasks) => {
+      if (err) return res.status(500).send(err);
+      const response = {
+          message: "Tweet deletado com sucesso!",
+          id: req.params.id
+      };
+      return res.status(200).send(response);
+    })
   },
 
   async like(req, res) {

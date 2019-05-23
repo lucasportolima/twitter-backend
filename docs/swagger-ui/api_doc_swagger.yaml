@@ -1,0 +1,209 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "1.0"
+  title: "Twitter API"
+  contact:
+    email: "lucasportolima@live.com"
+basePath: "/"
+tags:
+- name: "Tweet"
+  description: "Operations about tweet"
+schemes:
+- "http"
+paths:
+  /tweets:
+    get:
+      tags:
+        - "Tweet"
+      summary: "Show tweets"
+      description: "Shows all registered tweets"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/GetTweets"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      tags:
+      - "Tweet"
+      summary: "Create tweet"
+      description: "Create tweet"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "payload"
+        description: "content of tweet"
+        required: true
+        type: "string"
+        schema:
+          $ref: "#/definitions/payloadTweet"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/GetTweets"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /tweets/{id}:
+    put:
+      tags:
+      - "Tweet"
+      summary: "Update tweet"
+      description: "Update tweet"
+      operationId: tweetId
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "idTweet"
+        in: "path"
+        description: "id of tweet"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "payload"
+        description: "content of tweet"
+        required: true
+        type: "string"
+        schema:
+          $ref: "#/definitions/payloadTweet"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/GetTweets"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+      tags:
+      - "Tweet"
+      summary: "Show tweet by id"
+      description: "Show tweet by id"
+      operationId: tweetId
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "tweetId"
+        in: "path"
+        description: "id of tweet"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/GetTweets"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      tags:
+      - "Tweet"
+      summary: "Delete tweet"
+      description: "Delete tweet"
+      operationId: tweetId
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: tweetId
+        in: "path"
+        description: "id of tweet"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/GetTweets"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /like/{id}:
+    post:
+      tags:
+      - "Tweet"
+      summary: "New like"
+      description: "New like"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      operationId: tweetId
+      parameters:
+      - name: tweetId
+        in: "path"
+        description: "id of tweet"
+        required: true
+        type: "string"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/GetTweets"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+definitions:
+  Tweet:
+    type: "object"
+    properties:
+      author:
+        type: "string"
+        example: "Mock"
+      likes:
+        type: "number"
+        example: 1
+      content:
+        type: "string"
+        example: "Mockado"
+      createdAt:
+        type: "string"
+        example: "2019-05-22T19:31:08.898Z"
+  GetTweets:
+    allOf:
+      - type: "object"
+        properties:
+          _id:
+            type: "string"
+            example: "5cd19f77846401002a6d1146"
+      - $ref: "#/definitions/Tweet"
+  payloadTweet:
+    type: "object"
+    properties:
+      author:
+        type: "string"
+        example: "John"
+      content:
+        type: "string"
+        example: "Lorem ipsum"
+  ErrorResponse:
+    type: "object"
+    properties:
+      error_code:
+        type: "integer"
+        example: 12
+      message:
+        type: "string"
+        example: "Not Found"

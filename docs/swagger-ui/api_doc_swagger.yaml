@@ -43,7 +43,6 @@ paths:
         name: "payload"
         description: "content of tweet"
         required: true
-        type: "string"
         schema:
           $ref: "#/definitions/payloadTweet"
       responses:
@@ -61,13 +60,13 @@ paths:
       - "Tweet"
       summary: "Update tweet"
       description: "Update tweet"
-      operationId: tweetId
+      operationId: id
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "idTweet"
+      - name: id
         in: "path"
         description: "id of tweet"
         required: true
@@ -76,7 +75,6 @@ paths:
         name: "payload"
         description: "content of tweet"
         required: true
-        type: "string"
         schema:
           $ref: "#/definitions/payloadTweet"
       responses:
@@ -93,13 +91,13 @@ paths:
       - "Tweet"
       summary: "Show tweet by id"
       description: "Show tweet by id"
-      operationId: tweetId
+      operationId: idTweetGet
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: "tweetId"
+      - name: id
         in: "path"
         description: "id of tweet"
         required: true
@@ -118,13 +116,13 @@ paths:
       - "Tweet"
       summary: "Delete tweet"
       description: "Delete tweet"
-      operationId: tweetId
+      operationId: idTweetDelete
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
-      - name: tweetId
+      - name: id
         in: "path"
         description: "id of tweet"
         required: true
@@ -148,9 +146,9 @@ paths:
       - "application/json"
       produces:
       - "application/json"
-      operationId: tweetId
+      operationId: idTweetLike
       parameters:
-      - name: tweetId
+      - name: id
         in: "path"
         description: "id of tweet"
         required: true

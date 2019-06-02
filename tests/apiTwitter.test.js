@@ -4,12 +4,13 @@ const assert = require('assert');
 
 const app = require('./../src/index')
 
-// Configure chai
 chai.use(chaiHttp);
 chai.should();
 
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imx1Y2FzcG9ydG9saW1hNyIsImlhdCI6MTU1OTQ5OTk0MH0.HjoK0b2WTNSzAA5oaewghfQOC-Jzh9XWk-m1PWcdlcU'
+
 const mockTweet = {
-	"author": "Mock",
+	"author": "5ce96820f0f9d964985a0d12",
 	"content": "Mockado"
 };
 
@@ -22,6 +23,7 @@ describe("Twitter", () => {
     it("Cadastrar um novo tweet", done => {
       chai.request(app)
         .post('/tweets')
+        .set('Authorization', 'bearer ' + token)
         .send(mockTweet)
         .end((err, res) => {
           res.should.have.status(201);
@@ -36,10 +38,12 @@ describe("Twitter", () => {
     it("Novo like no tweet", done => {
       chai.request(app)
         .post('/tweets')
+        .set('Authorization', 'bearer ' + token)
         .send(mockTweet)
         .end((err, res) => {
           chai.request(app)
             .post(`/like/${ res.body._id }`)
+            .set('Authorization', 'bearer ' + token)
             .end((err, res) => {
               assert.equal(res.body.likes, 1)
               done()    
@@ -48,10 +52,10 @@ describe("Twitter", () => {
     });
   });
   describe("GET /", () => {
-    // Test to get all students record
     it("Deve trazer todos os tweets em formato de array", done => {
       chai.request(app)
         .get('/tweets')
+        .set('Authorization', 'bearer ' + token)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
@@ -61,6 +65,7 @@ describe("Twitter", () => {
     it("Deve trazer tweet do id informado", done => {
       chai.request(app)
         .get(`/tweets/${ newTweet._id }`)
+        .set('Authorization', 'bearer ' + token)
         .end((err, res) => {
           res.should.have.status(200);
           assert.deepEqual(mockTweet, {
@@ -72,13 +77,14 @@ describe("Twitter", () => {
     });
   });
   describe("PUT /", () => {
-    // Test to get all students record
     it("Deve atualizar um tweet", done => {
       chai.request(app)
         .get(`/tweets/${ newTweet._id }`)
+        .set('Authorization', 'bearer ' + token)
         .end((err, res) => {
           chai.request(app)
             .put(`/tweets/${ newTweet._id }`)
+            .set('Authorization', 'bearer ' + token)
             .send({
               "author": res.body.author,
               "content": updateContent 
@@ -92,10 +98,10 @@ describe("Twitter", () => {
     });
   });
   describe("DELETE /", () => {
-    // Test to get all students record
     it("Deve excluir um tweet", done => {
       chai.request(app)
         .delete(`/tweets/${ newTweet._id }`)
+        .set('Authorization', 'bearer ' + token)
         .end((err, res) => {
           res.should.have.status(200);
           assert.ok(res.body.message, 'Tweet deletado com sucesso!');
